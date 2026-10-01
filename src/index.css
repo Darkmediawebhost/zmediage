@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --brand-primary: #411484;
+    --brand-secondary: #060F46;
+    --brand-bg: #010109;
+    --brand-accent: #9d4edd;
+    --brand-glow: #8a2be2;
+  }
+
+  body {
+    background-color: #010109;
+    color: #ffffff;
+    font-family: "Roboto Slab", serif;
+    font-optical-sizing: auto;
+    overflow-x: hidden;
+  }
+}
+
+/* Custom glow and atmosphere utility effects */
+.glow-purple-sm {
+  box-shadow: 0 0 15px rgba(138, 43, 226, 0.35);
+}
+
+.glow-purple-md {
+  box-shadow: 0 0 30px rgba(138, 43, 226, 0.45);
+}
+
+.glow-purple-lg {
+  box-shadow: 0 0 50px rgba(138, 43, 226, 0.55), 0 0 100px rgba(65, 20, 132, 0.3);
+}
+
+.glow-purple-text {
+  text-shadow: 0 0 20px rgba(168, 85, 247, 0.6), 0 0 40px rgba(138, 43, 226, 0.3);
+}
+
+.border-glow-purple {
+  border-color: rgba(157, 78, 221, 0.7);
+  box-shadow: 0 0 20px rgba(157, 78, 221, 0.35), inset 0 0 15px rgba(157, 78, 221, 0.15);
+}
+
+/* Smooth background noise overlay */
+.bg-noise {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* Animations */
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes slowOrbit {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes waveFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 6s ease-in-out infinite;
+}
+
+.animate-slow-orbit {
+  animation: slowOrbit 120s linear infinite;
+}
+
+.animate-wave-float {
+  animation: waveFloat 8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse-glow,
+  .animate-slow-orbit,
+  .animate-wave-float {
+    animation: none !important;
+  }
+}

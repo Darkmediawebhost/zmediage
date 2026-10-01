@@ -1,0 +1,6 @@
+{
+  "name": "Zmediage | Interactive Brand Experience",
+  "description": "An immersive, cinematic 3-step interactive onboarding experience by Zmediage exploring why people make decisions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
