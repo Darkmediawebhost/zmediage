@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { ZLogo } from './ZLogo.tsx';
 import { ContactCard } from './ContactCard.tsx';
 import { PrimaryButton } from './PrimaryButton.tsx';
@@ -129,8 +130,8 @@ export const ScreenThree: React.FC<ScreenThreeProps> = ({
         )}
       </div>
 
-      {/* Interactive Project Inquiry Modal */}
-      {isModalOpen && (
+      {/* Interactive Project Inquiry Modal - Mounted to body via Portal to avoid stacking context overlap */}
+      {isModalOpen && typeof document !== 'undefined' && createPortal(
         <div
           role="dialog"
           aria-modal="true"
@@ -138,17 +139,17 @@ export const ScreenThree: React.FC<ScreenThreeProps> = ({
           onClick={(e) => {
             if (e.target === e.currentTarget) resetModal();
           }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 md:p-6 bg-black/85 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto"
+          className="fixed inset-0 z-[99999] flex items-center justify-center pt-[calc(1.5rem+env(safe-area-inset-top,0px))] pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] px-3.5 sm:px-6 bg-black/90 backdrop-blur-2xl animate-in fade-in duration-200 overflow-y-auto"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-lg my-auto bg-[#08081a]/95 backdrop-blur-2xl border border-[#a855f7]/40 rounded-2xl sm:rounded-3xl p-5 sm:p-7 md:p-8 shadow-[0_0_60px_rgba(138,43,226,0.35)] text-left max-h-[calc(100dvh-1.5rem)] sm:max-h-[90vh] overflow-y-auto modal-scrollbar overscroll-contain flex flex-col"
+            className="relative w-full max-w-lg my-auto bg-[#08081a]/98 backdrop-blur-2xl border border-[#a855f7]/40 rounded-2xl sm:rounded-3xl p-5 sm:p-7 md:p-8 shadow-[0_0_70px_rgba(138,43,226,0.45)] text-left max-h-[calc(100dvh-2.5rem)] sm:max-h-[90vh] overflow-y-auto modal-scrollbar overscroll-contain flex flex-col"
           >
             {/* Close Button */}
             <button
               type="button"
               onClick={resetModal}
-              className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 active:bg-white/20 text-zinc-400 hover:text-white flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 z-10"
+              className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 text-zinc-300 hover:text-white flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 z-10"
               aria-label="Close dialog"
             >
               <X className="w-4 h-4" />
@@ -238,7 +239,8 @@ export const ScreenThree: React.FC<ScreenThreeProps> = ({
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
