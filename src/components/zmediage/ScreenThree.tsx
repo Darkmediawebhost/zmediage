@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ZLogo } from './ZLogo.tsx';
 import { ContactCard } from './ContactCard.tsx';
 import { PrimaryButton } from './PrimaryButton.tsx';
-import { ArrowLeft, Sparkles, Send, X, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Sparkles, Send, X } from 'lucide-react';
 
 export interface ScreenThreeProps {
   onBack?: () => void;
@@ -22,6 +22,24 @@ export const ScreenThree: React.FC<ScreenThreeProps> = ({
     message: '',
   });
 
+  // Lock body scroll and handle Escape key when modal is open on mobile and desktop
+  useEffect(() => {
+    if (!isModalOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') resetModal();
+    };
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isModalOpen]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -30,7 +48,7 @@ export const ScreenThree: React.FC<ScreenThreeProps> = ({
     const encodedText = encodeURIComponent(text);
     
     // Open WhatsApp link
-    window.open(`https://wa.me/918304993869?text=${encodedText}`, '_blank');
+    window.open(`https://wa.me/919526840020?text=${encodedText}`, '_blank');
     
     resetModal();
   };
@@ -75,9 +93,9 @@ export const ScreenThree: React.FC<ScreenThreeProps> = ({
       <div className="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4 mb-8 sm:mb-10">
         <ContactCard
           type="email"
-          title="hello@zmediage.com"
+          title="info@zmediage.com"
           subtitle="Email us"
-          href="mailto:hello@zmediage.com?subject=Project%20Inquiry%20from%20QR%20Experience"
+          href="mailto:info@zmediage.com?subject=Project%20Inquiry%20from%20QR%20Experience"
         />
         <ContactCard
           type="instagram"
@@ -86,10 +104,10 @@ export const ScreenThree: React.FC<ScreenThreeProps> = ({
           href="https://instagram.com/zmediage"
         />
         <ContactCard
-          type="website"
-          title="www.zmediage.com"
-          subtitle="Visit our website"
-          href="https://www.zmediage.com"
+          type="whatsapp"
+          title="+91 83049 93869"
+          subtitle="Connect on WhatsApp"
+          href="https://wa.me/918304993869"
         />
       </div>
 
@@ -117,101 +135,108 @@ export const ScreenThree: React.FC<ScreenThreeProps> = ({
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-title"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) resetModal();
+          }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 md:p-6 bg-black/85 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto"
         >
-          <div className="relative w-full max-w-lg bg-[#08081a] border border-[#a855f7]/40 rounded-3xl p-6 sm:p-8 shadow-[0_0_60px_rgba(138,43,226,0.4)] text-left">
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-lg my-auto bg-[#08081a]/95 backdrop-blur-2xl border border-[#a855f7]/40 rounded-2xl sm:rounded-3xl p-5 sm:p-7 md:p-8 shadow-[0_0_60px_rgba(138,43,226,0.35)] text-left max-h-[calc(100dvh-1.5rem)] sm:max-h-[90vh] overflow-y-auto modal-scrollbar overscroll-contain flex flex-col"
+          >
             {/* Close Button */}
             <button
+              type="button"
               onClick={resetModal}
-              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-400"
+              className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 active:bg-white/20 text-zinc-400 hover:text-white flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 z-10"
               aria-label="Close dialog"
             >
               <X className="w-4 h-4" />
             </button>
 
-                <div className="flex items-center gap-2 text-purple-400 text-xs font-semibold tracking-wider uppercase mb-2">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>Start a Conversation</span>
-                </div>
-                <h3 id="modal-title" className="text-2xl font-bold text-white mb-2">
-                  Let's Create Something Memorable
-                </h3>
-                <p className="text-zinc-400 text-sm mb-6 leading-relaxed">
-                  Tell us about your brand vision, campaign goals, or interactive experience requirements.
-                </p>
+            <div className="flex items-center gap-1.5 sm:gap-2 text-purple-400 text-[11px] sm:text-xs font-semibold tracking-wider uppercase mb-1.5 sm:mb-2">
+              <Sparkles className="w-3.5 h-3.5 flex-shrink-0" />
+              <span>Start a Conversation</span>
+            </div>
+            <h3 id="modal-title" className="text-xl sm:text-2xl font-bold text-white mb-1 sm:mb-2 pr-7 leading-tight">
+              Let's Create Something Memorable
+            </h3>
+            <p className="text-zinc-400 text-xs sm:text-sm mb-4 sm:mb-5 leading-relaxed">
+              Tell us about your brand vision, campaign goals, or interactive experience requirements.
+            </p>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-medium text-zinc-300 mb-1.5" htmlFor="client-name">
-                      Your Name
-                    </label>
-                    <input
-                      id="client-name"
-                      type="text"
-                      required
-                      placeholder="Jane Doe"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400 text-sm transition-all"
-                    />
-                  </div>
+            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
+              <div>
+                <label className="block text-[11px] sm:text-xs font-medium text-zinc-300 mb-1 sm:mb-1.5" htmlFor="client-name">
+                  Your Name
+                </label>
+                <input
+                  id="client-name"
+                  type="text"
+                  required
+                  placeholder="Jane Doe"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full px-3.5 py-2.5 sm:px-4 sm:py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400 text-base sm:text-sm transition-all"
+                />
+              </div>
 
-                  <div>
-                    <label className="block text-xs font-medium text-zinc-300 mb-1.5" htmlFor="client-email">
-                      Work Email
-                    </label>
-                    <input
-                      id="client-email"
-                      type="email"
-                      required
-                      placeholder="jane@company.com"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400 text-sm transition-all"
-                    />
-                  </div>
+              <div>
+                <label className="block text-[11px] sm:text-xs font-medium text-zinc-300 mb-1 sm:mb-1.5" htmlFor="client-email">
+                  Work Email
+                </label>
+                <input
+                  id="client-email"
+                  type="email"
+                  required
+                  placeholder="jane@company.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full px-3.5 py-2.5 sm:px-4 sm:py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400 text-base sm:text-sm transition-all"
+                />
+              </div>
 
-                  <div>
-                    <label className="block text-xs font-medium text-zinc-300 mb-1.5" htmlFor="client-interest">
-                      Area of Focus
-                    </label>
-                    <select
-                      id="client-interest"
-                      value={formData.interest}
-                      onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl bg-[#0e0e24] border border-white/10 text-white focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400 text-sm transition-all"
-                    >
-                      <option value="BRANDING">BRANDING</option>
-                      <option value="WEBSITE DEVELOPMENT">WEBSITE DEVELOPMENT</option>
-                      <option value="SOCIAL MEDIA MARKETING">SOCIAL MEDIA MARKETING</option>
-                      <option value="PERFORMANCE MARKETING">PERFORMANCE MARKETING</option>
-                    </select>
-                  </div>
+              <div>
+                <label className="block text-[11px] sm:text-xs font-medium text-zinc-300 mb-1 sm:mb-1.5" htmlFor="client-interest">
+                  Area of Focus
+                </label>
+                <select
+                  id="client-interest"
+                  value={formData.interest}
+                  onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
+                  className="w-full px-3.5 py-2.5 sm:px-4 sm:py-2.5 rounded-xl bg-[#0e0e24] border border-white/10 text-white focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400 text-base sm:text-sm transition-all"
+                >
+                  <option value="BRANDING">BRANDING</option>
+                  <option value="WEBSITE DEVELOPMENT">WEBSITE DEVELOPMENT</option>
+                  <option value="SOCIAL MEDIA MARKETING">SOCIAL MEDIA MARKETING</option>
+                  <option value="PERFORMANCE MARKETING">PERFORMANCE MARKETING</option>
+                </select>
+              </div>
 
-                  <div>
-                    <label className="block text-xs font-medium text-zinc-300 mb-1.5" htmlFor="client-message">
-                      Project Notes (Optional)
-                    </label>
-                    <textarea
-                      id="client-message"
-                      rows={3}
-                      placeholder="Share timeline, objectives, or initial thoughts..."
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400 text-sm transition-all resize-none"
-                    />
-                  </div>
+              <div>
+                <label className="block text-[11px] sm:text-xs font-medium text-zinc-300 mb-1 sm:mb-1.5" htmlFor="client-message">
+                  Project Notes (Optional)
+                </label>
+                <textarea
+                  id="client-message"
+                  rows={2}
+                  placeholder="Share timeline, objectives, or initial thoughts..."
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  className="w-full px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400 text-base sm:text-sm transition-all resize-none min-h-[58px] sm:min-h-[72px]"
+                />
+              </div>
 
-                  <div className="pt-2">
-                    <button
-                      type="submit"
-                      className="w-full py-3.5 px-6 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-[#411484] via-[#7c3aed] to-[#9d4edd] hover:opacity-95 shadow-[0_0_20px_rgba(138,43,226,0.5)] transition-all flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-400"
-                    >
-                      <span>Send Project Request</span>
-                      <Send className="w-4 h-4" />
-                    </button>
-                  </div>
-                </form>
+              <div className="pt-1.5 sm:pt-2">
+                <button
+                  type="submit"
+                  className="w-full py-3 sm:py-3.5 px-5 sm:px-6 rounded-xl font-semibold text-sm sm:text-base text-white bg-gradient-to-r from-[#411484] via-[#7c3aed] to-[#9d4edd] hover:opacity-95 active:scale-[0.99] shadow-[0_0_20px_rgba(138,43,226,0.5)] transition-all flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-400"
+                >
+                  <span>Send Project Request</span>
+                  <Send className="w-4 h-4" />
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
