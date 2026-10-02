@@ -106,9 +106,9 @@ export const ScreenThree: React.FC<ScreenThreeProps> = ({
         />
         <ContactCard
           type="whatsapp"
-          title="+91 83049 93869"
+          title="+91 95268 40020"
           subtitle="Connect on WhatsApp"
-          href="https://wa.me/918304993869"
+          href="https://wa.me/919526840020"
         />
       </div>
 
