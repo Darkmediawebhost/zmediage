@@ -47,9 +47,9 @@ export const ScreenTwo: React.FC<ScreenTwoProps> = ({
           <br className="hidden sm:inline" />
           {' '}those decisions is{' '}
           <span className="bg-gradient-to-r from-[#d8b4fe] via-[#a855f7] to-[#7c3aed] bg-clip-text text-transparent font-semibold drop-shadow-[0_0_15px_rgba(168,85,247,0.4)]">
-            what marketing
-            <br className="hidden sm:inline" />
-            is all about.
+            what marketing 
+             <br className="hidden sm:inline" />  is all about.
+            
           </span>
         </p>
 
